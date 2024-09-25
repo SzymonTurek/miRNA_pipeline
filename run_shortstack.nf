@@ -8,8 +8,7 @@ params.multiqc = "$baseDir/multiqc"
 params.outdir = "results"
 params.fastqc_outdir = "results/fastqc_output"
 params.shortstack_output_dir = "results/shortstack_output"
-//params.counts = "$baseDir/results/shortstack_output/Counts.txt"
-//params.results = "$baseDir/results/shortstack_output/Results.txt"
+
 
 log.info """\
 Input parameters:
@@ -129,7 +128,6 @@ process RUN_SHORTSTACK {
 
 
 
-//ShortStack  --genomefile ${genome_file}  --known_miRNAs ${known_mirs}  --readfile ${reads} --outdir shortstack_output --threads 7 --dn_mirna
 
 process GREP_Y {
     tag "GREP output files"
@@ -175,20 +173,12 @@ process MIRTRACE {
 
 
 workflow {
-    //Channel.fromPath(params.fastq_files) \
-     //   | splitCsv(header:true) \
-      //  | map { row-> tuple(row.sample_id, file(row.read1)) } \
-       // | READ_FASTQS
-    
 
-   // Channel.fromPath(params.fastq_files)
-   //     .splitCsv( header: true )
-   //     .view { row -> "${row.sample_id} - ${row.read1}" }
 
     samples_ch = Channel.fromPath(params.fastq_files)
         .splitCsv(header: true)
         .map { row -> tuple(row.sample_id, file(row.read1)) }
-    //    .view()
+
     
     collected_samples_ch = Channel.fromPath(params.fastq_files)
         .splitCsv(header: true)
@@ -197,8 +187,6 @@ workflow {
         .view()
 
 
-   // samples_ch.view()
-   //  ECHO_CHANNEL(samples_ch)
 
    fastqc_ch = FASTQC(samples_ch)
    MULTIQC(fastqc_ch.collect())

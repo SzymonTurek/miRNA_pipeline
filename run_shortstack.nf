@@ -8,8 +8,8 @@ params.multiqc = "$baseDir/multiqc"
 params.outdir = "results"
 params.fastqc_outdir = "results/fastqc_output"
 params.shortstack_output_dir = "results/shortstack_output"
-params.counts = "$baseDir/results/shortstack_output/Counts.txt"
-params.results = "$baseDir/results/shortstack_output/Results.txt"
+//params.counts = "$baseDir/results/shortstack_output/Counts.txt"
+//params.results = "$baseDir/results/shortstack_output/Results.txt"
 
 log.info """\
 Input parameters:
@@ -104,6 +104,7 @@ process RUN_SHORTSTACK {
     tag "ShortStack on all samples"
     publishDir params.outdir, mode: 'copy'
 
+    label 'big_mem'
 
     input:
      path(genome_file)
@@ -112,7 +113,9 @@ process RUN_SHORTSTACK {
        
 
     output:
-    path "shortstack_output"
+    path "./shortstack_output"
+    path "./shortstack_output/Counts.txt", emit: counts_txt
+    path "./shortstack_output/Results.txt", emit: results_txt
 
 
     script:
@@ -197,9 +200,9 @@ workflow {
    // samples_ch.view()
    //  ECHO_CHANNEL(samples_ch)
 
-    //fastqc_ch = FASTQC(samples_ch)
-    //MULTIQC(fastqc_ch.collect())
-    //shortstack_ch = RUN_SHORTSTACK(params.reference_genome, params.mature_miRNA_list, collected_samples_ch  )
-   // grep_ch = GREP_Y(params.counts, params.results)
+   fastqc_ch = FASTQC(samples_ch)
+   MULTIQC(fastqc_ch.collect())
+   shortstack_ch = RUN_SHORTSTACK(params.reference_genome, params.mature_miRNA_list, collected_samples_ch  )
+   grep_ch = GREP_Y(RUN_SHORTSTACK.out.counts_txt, RUN_SHORTSTACK.out.results_txt)
    MIRTRACE(collected_samples_ch)
 }

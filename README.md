@@ -8,16 +8,18 @@ The pipeline was written in Nextflow and consists of the following programs:
 3. MiRTrace
 4. ShortStack
 
-The pipeline was prepared as part of the National Science Center project UMO-2020/37/B/NZ9/00586.
-
-Instruction:
+## Instruction:
 
 To run the pipeline, execute the following command:
 
-nextflow run run_shortstack.nf --mature_miRNA_list path_to_miRNA_list --reference_genome path_to_reference_genome --fastq_files path_to_fastq_files_directory -with-report
+``` nextflow run run_shortstack.nf --mature_miRNA_list path_to_miRNA_list --reference_genome path_to_reference_genome --fastq_files path_to_fastq_files_directory -with-report ```
 
 The required programs are available as a conda environment, which can be created from a .yml file, or as a Docker container.
 
 To create the conda environment, execute the following command:
 
-conda env create --name envname --file=environments.yml
+``` conda env create --name envname --file=environments.yml ```
+
+
+## Info
+_The pipeline was prepared as part of the National Science Center project UMO-2020/37/B/NZ9/00586._

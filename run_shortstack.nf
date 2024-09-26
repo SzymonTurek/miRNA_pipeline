@@ -194,3 +194,9 @@ workflow {
    grep_ch = GREP_Y(RUN_SHORTSTACK.out.counts_txt, RUN_SHORTSTACK.out.results_txt)
    MIRTRACE(collected_samples_ch)
 }
+
+
+workflow.onComplete {
+    log.info ( workflow.success ? "\nDone" : "Oops .. something went wrong" )
+
+}

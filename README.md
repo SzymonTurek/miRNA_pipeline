@@ -13,4 +13,4 @@ The pipeline was prepared as part of the National Science Center project UMO-202
 Instruction:
 
 To run the pipeline, execute the following command:
-nextflow run run_shortstack.nf --mature_miRNA_list path_to_miRNA_list --reference_genome path_to_reference_genome --fastq_files path_to_fastq_files_directory
+nextflow run run_shortstack.nf --mature_miRNA_list path_to_miRNA_list --reference_genome path_to_reference_genome --fastq_files path_to_fastq_files_directory -with-report

@@ -20,6 +20,8 @@ To create the conda environment, execute the following command:
 
 ``` conda env create --name envname --file=environments.yml ```
 
+A container containing the miRNA analysis programmes ShortStack(v4.0.2), miRTrace(v1.0.1), FastQC (v0.12.1) and MultiQC (v0.12.1) can be found at the following link: https://hub.docker.com/r/szymkoo0149/shortstack_mirtrace
+
 
 ## Info
 _The pipeline was prepared as part of the National Science Center project UMO-2020/37/B/NZ9/00586._

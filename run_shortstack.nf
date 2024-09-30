@@ -8,6 +8,7 @@ params.multiqc = "$baseDir/multiqc"
 params.outdir = "results"
 params.fastqc_outdir = "results/fastqc_output"
 params.shortstack_output_dir = "results/shortstack_output"
+params.python_script_file = "$baseDir/parse_shortstack_output.py"
 
 
 log.info """\
@@ -171,6 +172,29 @@ process MIRTRACE {
     """
 }
 
+process CREATE_COUNT_MATRIX {
+    tag "CREATE A COUNT MATRIX"
+    publishDir params.shortstack_output_dir, mode: 'copy'
+
+
+    input:
+    path(python_script)
+    path(results_file)
+    path(counts_file)
+    path(sample_info)
+    
+    
+    output:
+    path "Counts_Y_with_names.csv"
+    path "Counts_with_names.csv"
+
+    script:
+    """
+    python ${python_script} ${results_file} ${counts_file} ${sample_info} 
+   
+    """
+}
+
 
 workflow {
 
@@ -193,6 +217,7 @@ workflow {
    shortstack_ch = RUN_SHORTSTACK(params.reference_genome, params.mature_miRNA_list, collected_samples_ch  )
    grep_ch = GREP_Y(RUN_SHORTSTACK.out.counts_txt, RUN_SHORTSTACK.out.results_txt)
    MIRTRACE(collected_samples_ch)
+   CREATE_COUNT_MATRIX(params.python_script_file ,RUN_SHORTSTACK.out.results_txt, RUN_SHORTSTACK.out.counts_txt, params.fastq_files )
 }
 
 

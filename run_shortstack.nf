@@ -9,25 +9,19 @@ params.outdir = "results"
 params.fastqc_outdir = "results/fastqc_output"
 params.shortstack_output_dir = "results/shortstack_output"
 params.python_script_file = "$baseDir/parse_shortstack_output.py"
+params.threads = 2
 
 
-log.info """\
-Input parameters:
-$params.mature_miRNA_list
-$params.reference_genome
-$params.fastq_files
-$params.multiqc 
-$params.outdir    
-"""
+
 
 log.info """\
     S H O R T S T A C K  P I P E L I N E
     ===================================
-    transcriptome: ${params.mature_miRNA_list}
-    reads: ${params.reference_genome}
+    mature_miRNA_list: ${params.mature_miRNA_list}
+    reference_genome: ${params.reference_genome}
     fastq_files: ${params.fastq_files}
-    multiqc: ${params.multiqc}
     outdir: ${params.outdir}
+    ShortStack threads: ${params.threads}
     """
     .stripIndent(true)
 
@@ -110,6 +104,7 @@ process RUN_SHORTSTACK {
      path(genome_file)
      path(known_mirs)
      path(reads)
+     val(threads_number)
        
 
     output:
@@ -120,7 +115,7 @@ process RUN_SHORTSTACK {
 
     script:
     """
-    ShortStack  --genomefile ${genome_file}  --known_miRNAs ${known_mirs}  --readfile ${reads} --outdir shortstack_output --threads 8
+    ShortStack  --genomefile ${genome_file}  --known_miRNAs ${known_mirs}  --readfile ${reads} --outdir shortstack_output --threads ${threads_number}
     """
 
 
@@ -214,7 +209,7 @@ workflow {
 
    fastqc_ch = FASTQC(samples_ch)
    MULTIQC(fastqc_ch.collect())
-   shortstack_ch = RUN_SHORTSTACK(params.reference_genome, params.mature_miRNA_list, collected_samples_ch  )
+   shortstack_ch = RUN_SHORTSTACK(params.reference_genome, params.mature_miRNA_list, collected_samples_ch, params.threads   )
    grep_ch = GREP_Y(RUN_SHORTSTACK.out.counts_txt, RUN_SHORTSTACK.out.results_txt)
    MIRTRACE(collected_samples_ch)
    CREATE_COUNT_MATRIX(params.python_script_file ,RUN_SHORTSTACK.out.results_txt, RUN_SHORTSTACK.out.counts_txt, params.fastq_files )

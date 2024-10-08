@@ -30,6 +30,7 @@ def main():
     results = load_csv_file(args.results_file, "\t")
     counts = load_csv_file(args.counts_file, "\t")
     sample_info = load_csv_file(args.sample_info_file, ",")
+    full_counts = counts
 
     counts = counts.iloc[:, 3:]
     counts.insert(0, "known_miRNAs" ,results["known_miRNAs"])
@@ -46,9 +47,11 @@ def main():
     my_dict = dict(zip(sample_info['read1'], sample_info['sample_id']))
     counts.rename(columns=my_dict, inplace=True)
     Y_counts.rename(columns=my_dict, inplace=True)
-
+    full_counts.rename(columns=my_dict, inplace=True)
+   
     Y_counts.to_csv('Counts_Y_with_names.csv', index=False)
-    counts.to_csv('Counts_with_names.csv', index=False)
+    #counts.to_csv('named_counts.csv', index=False)
+    full_counts.to_csv('Counts_with_names.csv', index=False)
 
 
 if __name__ == "__main__":

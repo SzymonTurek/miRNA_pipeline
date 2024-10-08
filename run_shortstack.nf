@@ -14,6 +14,7 @@ params.threads = 2
 
 
 
+
 log.info """\
     S H O R T S T A C K  P I P E L I N E
     ===================================
@@ -115,7 +116,7 @@ process RUN_SHORTSTACK {
 
     script:
     """
-    ShortStack  --genomefile ${genome_file}  --known_miRNAs ${known_mirs}  --readfile ${reads} --outdir shortstack_output --threads ${threads_number}
+    ShortStack  --genomefile ${genome_file}  --known_miRNAs ${known_mirs}  --readfile ${reads} --outdir shortstack_output --threads ${threads_number} --dn_mirna
     """
 
 

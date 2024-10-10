@@ -43,13 +43,14 @@ def main():
     sample_info['read1'] = sample_info['read1'].str.replace(r'.fastq', '', regex=True)
     sample_info['read1'] = sample_info['read1'].str.replace(r'.fq', '', regex=True)
     sample_info['read1'] = sample_info['read1'].str.replace(r'.fq.gz', '', regex=True)
+    sample_info['read1'] = sample_info['read1'].str.replace(r'trimmed', 'trimmed_condensed', regex=True)
 
     my_dict = dict(zip(sample_info['read1'], sample_info['sample_id']))
     counts.rename(columns=my_dict, inplace=True)
     Y_counts.rename(columns=my_dict, inplace=True)
     full_counts.rename(columns=my_dict, inplace=True)
    
-    Y_counts.to_csv('Counts_Y_with_names.csv', index=False)
+    Y_counts.to_csv('named_Y_counts.csv', index=False)
     #counts.to_csv('named_counts.csv', index=False)
     full_counts.to_csv('Counts_with_names.csv', index=False)
 

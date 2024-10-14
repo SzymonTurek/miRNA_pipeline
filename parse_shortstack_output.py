@@ -50,7 +50,7 @@ def main():
     Y_counts.rename(columns=my_dict, inplace=True)
     full_counts.rename(columns=my_dict, inplace=True)
    
-    Y_counts.to_csv('named_Y_counts.csv', index=False)
+    Y_counts.to_csv('Counts_Y_with_names.csv', index=False)
     #counts.to_csv('named_counts.csv', index=False)
     full_counts.to_csv('Counts_with_names.csv', index=False)
 

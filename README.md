@@ -9,6 +9,13 @@ The pipeline was written in Nextflow and consists of the following programs:
 4. ShortStack
 
 ## Instruction:
+In the first step, you need to complete the sample_info.csv file so that it contains information about the sample name and and file paths. 
+
+| sample_id  |read1  |
+| ------------- | ------------- |
+| Sample1  | input_fastq/Sample1.fastq.gz  |
+| Sample2  | input_fastq/Sample2.fastq.gz  |
+
 
 To run the pipeline, execute the following command:
 
